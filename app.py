@@ -95,7 +95,7 @@ def get_answer(query, vector_store, llm):
         return f"Error generating response: {e}"
 
 def main():
-    st.title("📄 PDF Document Analysis")
+    st.title("📄 Vikas group Demo")
     
     # Initialize LLM
     llm = initialize_groq_llm()
