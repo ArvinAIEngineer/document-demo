@@ -18,11 +18,16 @@ warnings.filterwarnings("ignore", category=FutureWarning, message=".*torch.load.
 load_dotenv()
 
 def display_pdf(pdf_path):
-    """Display the PDF in the Streamlit app"""
-    with open(pdf_path, "rb") as f:
-        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
-    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="400" type="application/pdf"></iframe>'
-    st.markdown(pdf_display, unsafe_allow_html=True)
+    """Display the PDF in the Streamlit app using base64 encoding."""
+    try:
+        with open(pdf_path, "rb") as f:
+            base64_pdf = base64.b64encode(f.read()).decode("utf-8")
+        pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="500" type="application/pdf"></iframe>'
+        st.markdown(pdf_display, unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.error("The PDF file was not found in the root folder.")
+    except Exception as e:
+        st.error(f"Error displaying the PDF: {e}")
 
 @st.cache_resource
 def initialize_groq_llm():
@@ -103,8 +108,8 @@ def main():
         return
 
     # PDF Path and Display
-    pdf_path = "document.pdf"
-    
+    pdf_path = "document.pdf"  # Adjust to your PDF filename
+
     # Show PDF preview
     st.subheader("Document Preview")
     try:
